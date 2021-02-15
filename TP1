@@ -1,0 +1,82 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+
+void main() => runApp(new MyApp());
+
+class MyApp extends StatelessWidget {
+  static const String _title = 'Flutter Code Sample';
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: _title,
+      home: MyStatefulWidget(),
+    );
+  }
+}
+
+/// This is the stateful widget that the main application instantiates.
+class MyStatefulWidget extends StatefulWidget {
+  MyStatefulWidget({Key key}) : super(key: key);
+
+  @override
+  _MyStatefulWidgetState createState() => _MyStatefulWidgetState();
+}
+
+/// This is the private State class that goes with MyStatefulWidget.
+class _MyStatefulWidgetState extends State<MyStatefulWidget> {
+  int _selectedIndex = 0;
+  String texte;
+  static const List<Widget> _widgetOptions = <Widget>[
+
+    const Image(
+      image: NetworkImage('https://th.bing.com/th/id/Rfb877727f4718071c6b8ce4d3efecc98?rik=m5fR0o%2bOeOqU%2bQ&riu=http%3a%2f%2fjinshanlingchangcheng.com%2fapps%2fsite%2fsite%2fupload%2fimage%2f2017%2f11%2f14%2f1510628461621.png&ehk=mHYO0dIWIAIV9HAvgNkHlcyKP%2fWf8mgyL%2f%2bvd%2b32o5c%3d&risl=&pid=ImgRaw'),
+    ),
+
+    Text.rich(
+      TextSpan(
+        text: 'La Grande Muraille  ', style: TextStyle(fontWeight: FontWeight.bold,fontSize: 32.0), // default text style
+        children: <TextSpan>[
+          TextSpan(text: 'est un ensemble de fortifications militaires chinoises construites, détruites et reconstruites en plusieurs fois et à plusieurs endroits entre le iiie siècle av. J.-C. et le xviie siècle pour marquer et défendre la frontière nord de la Chine.'
+              , style: TextStyle(fontStyle: FontStyle.italic,fontSize: 20.0)),
+        ],
+      ),
+    ),
+
+    Text('Merci davoir regardé'),
+
+  ];
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('BottomNavigationBar Sample'),
+      ),
+      body: Center(
+        child: _widgetOptions.elementAt(_selectedIndex),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(icon: Icon(Icons.live_tv),label: 'Image',
+          ),
+          BottomNavigationBarItem(icon: Icon(Icons.campaign),label: 'Introduction',
+          ),
+          BottomNavigationBarItem(icon: Icon(Icons.check),label: 'Commenter',
+          ),
+         ],
+        currentIndex: _selectedIndex,
+        selectedItemColor: Colors.amber[800],
+        onTap: _onItemTapped,
+      ),
+    );
+  }
+
+
+}
