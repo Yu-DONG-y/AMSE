@@ -1,0 +1,108 @@
+import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+
+void main() {
+  runApp(imagepad());
+}
+
+class imagepad extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() {
+    return _image();
+  }
+}
+
+class _image extends State<imagepad> {
+  int m = 2;
+  double h_image = 100;
+  double w_image = 100;
+  String image_ad =
+      'https://th.bing.com/th/id/R3e01782d2684792d41201a7e74de3987?rik=%2fN%2fWzn4SVCU3iw&riu=http%3a%2f%2ftao.goulew.com%2fusers%2fupfile%2f20190505%2fa7f52949-3f21-4610-b3f1-4da8535d7fe6.jpg&ehk=hkbuHs3A4uFZayRkb%2bwhHzUD26TDlmyA5mw2nU%2fsHgw%3d&risl=&pid=ImgRaw';
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Image',
+      home: Center(
+        child: new Column(
+          children: [
+            new Container(
+              width: 300,
+              height: 300,
+              child: GridView.count(
+                crossAxisSpacing: 0,
+                mainAxisSpacing: 0,
+                crossAxisCount: m,
+                childAspectRatio: 1,
+                children: [
+                  Container(
+                    width: 300 / m,
+                    height: 300 / m,
+                    child: new Image.network('$image_ad', fit: BoxFit.fill),
+                  ),
+                  Container(
+                    child: new Image.network('$image_ad', fit: BoxFit.fill),
+                  ),
+                  Container(
+                    child: new Image.network('$image_ad', fit: BoxFit.fill),
+                  ),
+                  Container(
+                    child: new Image.network('$image_ad', fit: BoxFit.fill),
+                  ),
+                ],
+              ),
+            ),
+            ClipRect(
+              child: Container(
+                  child: Align(
+                    alignment: Alignment.bottomLeft,
+                    heightFactor: 0.5,
+                    widthFactor: 0.5,
+                    child: new Image.network('$image_ad'),
+                  )),
+            ),
+            new Row(
+              children: [
+                new FlatButton(
+                  child: Text(
+                    '-',
+                    style: TextStyle(color: Colors.black),
+                  ),
+                  onPressed: () {
+                    m--;
+                    if (m < 1) {
+                      m = 1;
+                    }
+                    setState(() {});
+                  },
+                  color: Colors.white,
+                ),
+                Expanded(
+                    child: Text(
+                  '$m',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      backgroundColor: Colors.white, color: Colors.black),
+                )),
+                new RaisedButton(
+                  child: Text(
+                    '+',
+                    style: TextStyle(color: Colors.black),
+                  ),
+                  onPressed: () {
+                    m++;
+                    if (m > 9) {
+                      m = 9;
+                    }
+                    setState(() {});
+                  },
+                  color: Colors.white,
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
