@@ -12,12 +12,11 @@ class imagepad extends StatefulWidget {
   }
 }
 
-int m=2;
+int m = 3;
 
 class _image extends State<imagepad> {
   int i;
-  double h_image = 100;
-  double w_image = 100;
+
   String image_ad =
       'https://th.bing.com/th/id/R3e01782d2684792d41201a7e74de3987?rik=%2fN%2fWzn4SVCU3iw&riu=http%3a%2f%2ftao.goulew.com%2fusers%2fupfile%2f20190505%2fa7f52949-3f21-4610-b3f1-4da8535d7fe6.jpg&ehk=hkbuHs3A4uFZayRkb%2bwhHzUD26TDlmyA5mw2nU%2fsHgw%3d&risl=&pid=ImgRaw';
 
@@ -29,26 +28,9 @@ class _image extends State<imagepad> {
         child: new Column(
           children: [
             new Container(
-              height: 300,
-              width: 300,
+              height: 300 + 1.0 * m - 1,
+              width: 300 + 1.0 * m - 1,
               child: HomeContent(),
-            ),
-            new ClipRect(
-              child: Container(
-                child: Align(
-                  alignment: Alignment(-1, -1),
-                  heightFactor: 1 / m,
-                  widthFactor: 1 / m,
-                  child: Container(
-                    height: 300,
-                    width: 300,
-                    child: Image.network(
-                      '$image_ad',
-                      fit: BoxFit.fill,
-                    ),
-                  ),
-                ),
-              ),
             ),
             new Row(
               children: [
@@ -94,36 +76,47 @@ class _image extends State<imagepad> {
       ),
     );
   }
-
-
 }
 
 class HomeContent extends StatelessWidget {
+  // 私有方法
   String image_ad =
       'https://th.bing.com/th/id/R3e01782d2684792d41201a7e74de3987?rik=%2fN%2fWzn4SVCU3iw&riu=http%3a%2f%2ftao.goulew.com%2fusers%2fupfile%2f20190505%2fa7f52949-3f21-4610-b3f1-4da8535d7fe6.jpg&ehk=hkbuHs3A4uFZayRkb%2bwhHzUD26TDlmyA5mw2nU%2fsHgw%3d&risl=&pid=ImgRaw';
 
-
+  double x_clip;
+  double y_clip;
 
   List<Widget> _getData() {
     List<Widget> list = new List();
-    for (int i = 0; i < m*m; i++) {
-      list.add(ClipRect(
-        child: Container(
-          child: Align(
-            alignment: Alignment(-1, -1),
-            heightFactor: 0.1,
-            widthFactor: 0.1,
-            child: Container(
-              height: 300,
-              width: 300,
-              child: Image.network(
-                '$image_ad',
-                fit: BoxFit.fill,
+    for (int i = 0; i < m * m; i++) {
+      if (m == 1) {
+        x_clip = 0;
+        y_clip = 0;
+      } else {
+        x_clip = -1 + i % m * 2 / (m - 1);
+        y_clip = -1 + i ~/ m * 2 / (m - 1);
+      }
+
+      list.add(
+        Container(
+            height: 300 / m,
+            width: 300 / m,
+            child: UnconstrainedBox(
+              child: ClipRect(
+                child: Align(
+                  alignment: Alignment(x_clip, y_clip),
+                  heightFactor: 1 / m,
+                  widthFactor: 1 / m,
+                  child: Image.network(
+                    '$image_ad',
+                    height: 300,
+                    width: 300,
+                    fit: BoxFit.fill,
+                  ),
+                ),
               ),
-            ),
-          ),
-        ),
-      ));
+            )),
+      );
     }
     return list;
   }
@@ -132,8 +125,8 @@ class HomeContent extends StatelessWidget {
   Widget build(BuildContext context) {
     return GridView.count(
         padding: const EdgeInsets.all(0),
-        crossAxisSpacing: 0,
-        mainAxisSpacing: 0,
+        crossAxisSpacing: 1,
+        mainAxisSpacing: 1,
         crossAxisCount: m,
         childAspectRatio: 1,
         children: this._getData());
