@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'dart:math';
 
 void main() {
   runApp(imagepad());
@@ -12,7 +13,9 @@ class imagepad extends StatefulWidget {
   }
 }
 
-int m = 3;
+int m = 2;
+int p_r;
+bool start;
 
 class _image extends State<imagepad> {
   int i;
@@ -27,12 +30,15 @@ class _image extends State<imagepad> {
       home: Center(
         child: new Column(
           children: [
+            //plateau
             new Container(
               height: 300 + 1.0 * m - 1,
               width: 300 + 1.0 * m - 1,
               child: HomeContent(),
             ),
+            //number button
             new Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 new FlatButton(
                   child: Text(
@@ -40,31 +46,67 @@ class _image extends State<imagepad> {
                     style: TextStyle(color: Colors.black),
                   ),
                   onPressed: () {
-                    m--;
-                    if (m < 1) {
-                      m = 1;
+                    if (start) {
+                      return null;
+                    } else {
+                      m--;
+                      if (m < 1) {
+                        m = 1;
+                      }
+                      setState(() {});
                     }
-                    setState(() {});
                   },
                   color: Colors.white,
                 ),
-                Expanded(
-                    child: Text(
+                Text(
                   '$m',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                       backgroundColor: Colors.white, color: Colors.black),
-                )),
-                new RaisedButton(
+                ),
+                new FlatButton(
                   child: Text(
                     '+',
                     style: TextStyle(color: Colors.black),
                   ),
                   onPressed: () {
-                    m++;
-                    if (m > 9) {
-                      m = 9;
+                    if (start) {
+                      return null;
+                    } else {
+                      m++;
+                      if (m > 9) {
+                        m = 9;
+                      }
+                      setState(() {});
                     }
+                  },
+                  color: Colors.white,
+                ),
+              ],
+            ),
+            //start and reset
+            new Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                new FlatButton(
+                  child: Text(
+                    'start',
+                    style: TextStyle(color: Colors.black),
+                  ),
+                  onPressed: () {
+                    p_r = 1 + Random().nextInt(m * m);
+                    start = true;
+                    setState(() {});
+                  },
+                  color: Colors.white,
+                ),
+                new FlatButton(
+                  child: Text(
+                    'reset',
+                    style: TextStyle(color: Colors.black),
+                  ),
+                  onPressed: () {
+                    start = false;
                     setState(() {});
                   },
                   color: Colors.white,
@@ -96,27 +138,59 @@ class HomeContent extends StatelessWidget {
         x_clip = -1 + i % m * 2 / (m - 1);
         y_clip = -1 + i ~/ m * 2 / (m - 1);
       }
-
-      list.add(
-        Container(
-            height: 300 / m,
-            width: 300 / m,
-            child: UnconstrainedBox(
-              child: ClipRect(
-                child: Align(
-                  alignment: Alignment(x_clip, y_clip),
-                  heightFactor: 1 / m,
-                  widthFactor: 1 / m,
-                  child: Image.network(
-                    '$image_ad',
-                    height: 300,
-                    width: 300,
-                    fit: BoxFit.fill,
+      if (start) {
+        if (i == p_r) {
+          list.add(
+            Container(
+              height: 300 / m,
+              width: 300 / m,
+              color: Colors.white,
+            ),
+          );
+        } else {
+          list.add(
+            Container(
+                height: 300 / m,
+                width: 300 / m,
+                child: UnconstrainedBox(
+                  child: ClipRect(
+                    child: Align(
+                      alignment: Alignment(x_clip, y_clip),
+                      heightFactor: 1 / m,
+                      widthFactor: 1 / m,
+                      child: Image.network(
+                        '$image_ad',
+                        height: 300,
+                        width: 300,
+                        fit: BoxFit.fill,
+                      ),
+                    ),
+                  ),
+                )),
+          );
+        }
+      } else {
+        list.add(
+          Container(
+              height: 300 / m,
+              width: 300 / m,
+              child: UnconstrainedBox(
+                child: ClipRect(
+                  child: Align(
+                    alignment: Alignment(x_clip, y_clip),
+                    heightFactor: 1 / m,
+                    widthFactor: 1 / m,
+                    child: Image.network(
+                      '$image_ad',
+                      height: 300,
+                      width: 300,
+                      fit: BoxFit.fill,
+                    ),
                   ),
                 ),
-              ),
-            )),
-      );
+              )),
+        );
+      }
     }
     return list;
   }
