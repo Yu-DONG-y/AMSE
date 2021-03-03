@@ -14,6 +14,7 @@ class imagepad extends StatefulWidget {
 }
 
 int m = 2;
+int f = m * m;
 int p_r;
 bool start;
 
@@ -120,13 +121,19 @@ class _image extends State<imagepad> {
   }
 }
 
-class HomeContent extends StatelessWidget {
-  // 私有方法
+class HomeContent extends StatefulWidget {
+  @override
+  _State createState() => _State();
+}
+
+class _State extends State<HomeContent> {
   String image_ad =
       'https://th.bing.com/th/id/R3e01782d2684792d41201a7e74de3987?rik=%2fN%2fWzn4SVCU3iw&riu=http%3a%2f%2ftao.goulew.com%2fusers%2fupfile%2f20190505%2fa7f52949-3f21-4610-b3f1-4da8535d7fe6.jpg&ehk=hkbuHs3A4uFZayRkb%2bwhHzUD26TDlmyA5mw2nU%2fsHgw%3d&risl=&pid=ImgRaw';
 
   double x_clip;
   double y_clip;
+  var im = List<int>(f);
+  int cl;
 
   List<Widget> _getData() {
     List<Widget> list = new List();
@@ -135,9 +142,10 @@ class HomeContent extends StatelessWidget {
         x_clip = 0;
         y_clip = 0;
       } else {
-        x_clip = -1 + i % m * 2 / (m - 1);
-        y_clip = -1 + i ~/ m * 2 / (m - 1);
+        x_clip = -1 + im[i] % m * 2 / (m - 1);
+        y_clip = -1 + im[i] ~/ m * 2 / (m - 1);
       }
+
       if (start) {
         if (i == p_r) {
           list.add(
@@ -148,8 +156,8 @@ class HomeContent extends StatelessWidget {
             ),
           );
         } else {
-          list.add(
-            Container(
+          list.add(GestureDetector(
+            child: Container(
                 height: 300 / m,
                 width: 300 / m,
                 child: UnconstrainedBox(
@@ -167,9 +175,31 @@ class HomeContent extends StatelessWidget {
                     ),
                   ),
                 )),
-          );
+            onTap: () {
+              if (i + m == p_r ||
+                  i - m == p_r ||
+                  (i + 1 == p_r && i ~/ m == p_r ~/ m) ||
+                  (i - 1 == p_r && i ~/ m == p_r ~/ m)) {
+                cl = im[p_r];
+                im[p_r] = im[i];
+                im[i] = cl;
+                p_r = i;
+                setState(() {});
+              }
+            },
+          ));
         }
       } else {
+        for (int i = 0; i < m * m; i++) {
+          im[i] = i;
+        }
+        if (m == 1) {
+          x_clip = 0;
+          y_clip = 0;
+        } else {
+          x_clip = -1 + im[i] % m * 2 / (m - 1);
+          y_clip = -1 + im[i] ~/ m * 2 / (m - 1);
+        }
         list.add(
           Container(
               height: 300 / m,
