@@ -99,7 +99,6 @@ class _image extends State<imagepad> {
 }
 
 class HomeContent extends StatelessWidget {
-  // 私有方法
   String image_ad =
       'https://th.bing.com/th/id/R3e01782d2684792d41201a7e74de3987?rik=%2fN%2fWzn4SVCU3iw&riu=http%3a%2f%2ftao.goulew.com%2fusers%2fupfile%2f20190505%2fa7f52949-3f21-4610-b3f1-4da8535d7fe6.jpg&ehk=hkbuHs3A4uFZayRkb%2bwhHzUD26TDlmyA5mw2nU%2fsHgw%3d&risl=&pid=ImgRaw';
 
